@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "diffusion_models"
+version = "0.0.1"
+description = "Sometimes it is helpful to consider the simplest possible version of something to better understand how it works. We\u2019re going to try that in this notebook, beginning with a \u2018toy\u2019 diffusion model to see how the different pieces work, and then examining how they differ from a more complex implementation."
+authors = [
+  { name = "Mark Baltachi" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License"
+]
+requires-python = "~=3.11.0"
+
+
+[tool.ruff]
+line-length = 99
+src = ["diffusion_models"]
+include = ["pyproject.toml", "diffusion_models/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Add import sorting
+
+[tool.ruff.lint.isort]
+known-first-party = ["diffusion_models"]
+force-sort-within-sections = true
+
