@@ -1,8 +1,12 @@
 # Diffusion Models
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-red)](https://pytorch.org/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![Diffusers](https://img.shields.io/badge/🤗_Diffusers-0.21%2B-FF9D00)](https://huggingface.co/docs/diffusers)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![Release](https://img.shields.io/badge/Release-v1.0.0-brightgreen)](https://github.com/mar1k123/Diffusion-Models/releases)
+[![Tests](https://img.shields.io/badge/Tests-27%2F27%20passed-success)](https://github.com/mar1k123/Diffusion-Models)
 
 A from-scratch implementation of diffusion models for image generation. Built with PyTorch and `diffusers`.
 
@@ -14,9 +18,11 @@ A from-scratch implementation of diffusion models for image generation. Built wi
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [CLI (Recommended)](#cli-recommended)
   - [Training](#training)
   - [Inference](#inference)
   - [Jupyter Notebooks](#jupyter-notebooks)
+  - [Docker](#docker)
 - [Project Structure](#project-structure)
 - [Configuration](#configuration)
 - [Results](#results)
@@ -50,6 +56,9 @@ This project implements:
 - ✅ Modular, OOP-based code structure
 - ✅ Visualization tools for every stage (noising, denoising, sampling)
 - ✅ Jupyter notebook support
+- ✅ CLI interface with argparse
+- ✅ Docker support
+- ✅ 27 unit tests
 - ✅ Easy configuration via `config.py`
 
 ---
@@ -87,6 +96,26 @@ python -c "import torch; import diffusers; print('Setup OK')"
 
 ## Usage
 
+### CLI (Recommended)
+
+The simplest way to train and generate is via the command-line interface:
+
+```bash
+# Train the model
+python cli.py train
+
+# Train with custom parameters
+python cli.py train --epochs 5 --batch-size 64
+
+# Generate images
+python cli.py predict
+
+# Generate with custom parameters
+python cli.py predict --steps 20 --samples 16
+```
+
+Run `python cli.py --help` to see all available commands.
+
 ### Training
 
 Train the model on MNIST (default) or FashionMNIST:
@@ -94,8 +123,6 @@ Train the model on MNIST (default) or FashionMNIST:
 ```bash
 python -m diffusion_models.modeling.train
 ```
-
-To change dataset or hyperparameters, edit `diffusion_models/config.py` or pass arguments (coming soon).
 
 ### Inference
 
@@ -113,7 +140,18 @@ Launch Jupyter Lab to explore the notebooks:
 jupyter lab
 ```
 
-Open any notebook from the `notebooks/` folder for step-by-step experimentation.
+### Docker
+
+```bash
+# Build the image
+docker build -t diffusion-models .
+
+# Train with GPU
+docker run --gpus all diffusion-models
+
+# Interactive shell
+docker run -it diffusion-models bash
+```
 
 ---
 
@@ -123,6 +161,8 @@ Open any notebook from the `notebooks/` folder for step-by-step experimentation.
 ├── LICENSE                  <- Open-source license
 ├── Makefile                 <- Convenience commands (make data, make train)
 ├── README.md                <- This file
+├── cli.py                   <- Command-line interface
+├── Dockerfile               <- Docker image definition
 │
 ├── data/
 │   ├── external/            <- Third-party data
@@ -141,6 +181,8 @@ Open any notebook from the `notebooks/` folder for step-by-step experimentation.
 │
 ├── reports/
 │   └── figures/             <- Generated plots and figures
+│
+├── tests/                   <- Unit tests
 │
 ├── .gitignore
 ├── pyproject.toml           <- Project metadata & tool config
@@ -223,7 +265,7 @@ Plots are saved in `reports/figures/` and displayed during training.
 - [ ] Support RGB datasets (CIFAR-10, Butterfly)
 - [ ] Add mixed precision training (AMP)
 - [ ] Add experiment tracking (MLflow / TensorBoard)
-- [ ] Add unit tests
+- [ ] Add Gradio web demo
 - [ ] Publish to PyPI
 
 ---
