@@ -1,29 +1,38 @@
-from pathlib import Path
+"""Data loading and preparation for Diffusion Models."""
 
-from loguru import logger
-from tqdm import tqdm
-import typer
+import torchvision
+from torch.utils.data import DataLoader
 
-from diffusion_models.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
-
-app = typer.Typer()
+from diffusion_models.config import DATA_ROOT, BATCH_SIZE, DATASET_NAME
 
 
-@app.command()
-def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    input_path: Path = RAW_DATA_DIR / "dataset.csv",
-    output_path: Path = PROCESSED_DATA_DIR / "dataset.csv",
-    # ----------------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Processing dataset...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Processing dataset complete.")
-    # -----------------------------------------
+def get_dataloader(batch_size: int = BATCH_SIZE, train: bool = True) -> DataLoader:
+    """
+    Load dataset and return a DataLoader.
 
+    Args:
+        batch_size: Batch size for training.
+        train: Whether to load training or test set.
 
-if __name__ == "__main__":
-    app()
+    Returns:
+        DataLoader for the dataset.
+    """
+    if DATASET_NAME == "MNIST":
+        dataset = torchvision.datasets.MNIST(
+            root=DATA_ROOT,
+            train=train,
+            download=True,
+            transform=torchvision.transforms.ToTensor(),
+        )
+    elif DATASET_NAME == "FashionMNIST":
+        dataset = torchvision.datasets.FashionMNIST(
+            root=DATA_ROOT,
+            train=train,
+            download=True,
+            transform=torchvision.transforms.ToTensor(),
+        )
+    else:
+        raise ValueError(f"Unsupported dataset: {DATASET_NAME}")
+
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=train)
+    return dataloader

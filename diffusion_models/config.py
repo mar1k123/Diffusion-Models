@@ -1,32 +1,44 @@
-from pathlib import Path
+"""Configuration and global settings for Diffusion Models project."""
 
-from dotenv import load_dotenv
-from loguru import logger
+import torch
 
-# Load environment variables from .env file if it exists
-load_dotenv()
+# Device setup
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Paths
-PROJ_ROOT = Path(__file__).resolve().parents[1]
-logger.info(f"PROJ_ROOT path is: {PROJ_ROOT}")
+DATA_ROOT = "data/raw"
+MODEL_SAVE_PATH = "models/checkpoints"
 
-DATA_DIR = PROJ_ROOT / "data"
-RAW_DATA_DIR = DATA_DIR / "raw"
-INTERIM_DATA_DIR = DATA_DIR / "interim"
-PROCESSED_DATA_DIR = DATA_DIR / "processed"
-EXTERNAL_DATA_DIR = DATA_DIR / "external"
+# Dataset
+DATASET_NAME = "MNIST"
+IMAGE_SIZE = 28
+IMAGE_CHANNELS = 1
+BATCH_SIZE = 128
+N_EPOCHS = 3
+LEARNING_RATE = 1e-3
 
-MODELS_DIR = PROJ_ROOT / "models"
+# U-Net Model
+UNET_CONFIG = {
+    "sample_size": 28,
+    "in_channels": 1,
+    "out_channels": 1,
+    "layers_per_block": 2,
+    "block_out_channels": (32, 64, 64),
+    "down_block_types": (
+        "DownBlock2D",
+        "AttnDownBlock2D",
+        "AttnDownBlock2D",
+    ),
+    "up_block_types": (
+        "AttnUpBlock2D",
+        "AttnUpBlock2D",
+        "UpBlock2D",
+    ),
+}
 
-REPORTS_DIR = PROJ_ROOT / "reports"
-FIGURES_DIR = REPORTS_DIR / "figures"
+# DDPM Scheduler
+NUM_TRAIN_TIMESTEPS = 1000
 
-# If tqdm is installed, configure loguru with tqdm.write
-# https://github.com/Delgan/loguru/issues/135
-try:
-    from tqdm import tqdm
-
-    logger.remove(0)
-    logger.add(lambda msg: tqdm.write(msg, end=""), colorize=True)
-except ModuleNotFoundError:
-    pass
+# Sampling
+SAMPLING_STEPS = 40
+NUM_SAMPLES = 64

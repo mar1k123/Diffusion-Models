@@ -1,32 +1,46 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
 
 [project]
-name = "diffusion_models"
-version = "0.0.1"
-description = "Sometimes it is helpful to consider the simplest possible version of something to better understand how it works. We\u2019re going to try that in this notebook, beginning with a \u2018toy\u2019 diffusion model to see how the different pieces work, and then examining how they differ from a more complex implementation."
-authors = [
-  { name = "Mark Baltachi" },
-]
-license = { file = "LICENSE" }
+name = "diffusion-models"
+version = "0.1.0"
+description = "Diffusion Models from scratch"
 readme = "README.md"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License"
+authors = [
+    { name = "mar1k123" }
 ]
-requires-python = "~=3.11.0"
+requires-python = ">=3.10,<4.0"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "diffusers>=0.21.0",
+    "matplotlib>=3.7.0",
+    "notebook>=7.0.0",
+    "jupyterlab>=4.0.0",
+    "ipython>=8.0.0",
+]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.1.0",
+    "mkdocs>=1.5.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["diffusion_models*"]
 
 [tool.ruff]
-line-length = 99
-src = ["diffusion_models"]
-include = ["pyproject.toml", "diffusion_models/**/*.py"]
+line-length = 100
 
-[tool.ruff.lint]
-extend-select = ["I"]  # Add import sorting
-
-[tool.ruff.lint.isort]
-known-first-party = ["diffusion_models"]
-force-sort-within-sections = true
-
+[tool.pytest.ini_options]
+testpaths = ["tests"]

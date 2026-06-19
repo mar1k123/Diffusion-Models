@@ -1,1 +1,1 @@
-from diffusion_models import config  # noqa: F401
+"""Diffusion Models package."""

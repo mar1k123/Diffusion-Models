@@ -1,4 +1,8 @@
 ipython
+torch
+torchvision
+diffusers
+matplotlib
 jupyterlab
 loguru
 matplotlib

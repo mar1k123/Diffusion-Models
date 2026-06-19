@@ -1,29 +1,19 @@
-from pathlib import Path
+"""Feature engineering and utility functions for Diffusion Models."""
 
-from loguru import logger
-from tqdm import tqdm
-import typer
-
-from diffusion_models.config import PROCESSED_DATA_DIR
-
-app = typer.Typer()
+import torch
 
 
-@app.command()
-def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    input_path: Path = PROCESSED_DATA_DIR / "dataset.csv",
-    output_path: Path = PROCESSED_DATA_DIR / "features.csv",
-    # -----------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Generating features from dataset...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Features generation complete.")
-    # -----------------------------------------
+def corrupt(x: torch.Tensor, amount: torch.Tensor) -> torch.Tensor:
+    """
+    Corrupt the input `x` by mixing it with noise according to `amount`.
 
+    Args:
+        x: Clean input tensor of shape (B, C, H, W).
+        amount: Noise amount per sample, shape (B,).
 
-if __name__ == "__main__":
-    app()
+    Returns:
+        Corrupted tensor of same shape as x.
+    """
+    noise = torch.rand_like(x)
+    amount = amount.view(-1, 1, 1, 1)
+    return x * (1 - amount) + noise * amount

@@ -189,3 +189,13 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Models
+models/checkpoints/*.pt
+models/checkpoints/*.pth
+
+# Project specific
+mnist/
+data/raw/
+data/interim/
+data/processed/
